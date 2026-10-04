@@ -1,0 +1,8 @@
+# Battery cycling ingest schedule. Install with:  crontab -e   (then paste and fix the path)
+# Paths must be absolute. Cron runs with a minimal environment.
+
+# Every 15 minutes: pick up new or updated cycler exports from the raw drop folder.
+*/15 * * * * /home/YOUR_USER/battery-cycling-dashboard/scripts/run_ingest.sh
+
+# Every night at 02:10: full reload as a safety net, then rebuild all HTML reports.
+10 2 * * * /home/YOUR_USER/battery-cycling-dashboard/scripts/run_ingest.sh --force && cd /home/YOUR_USER/battery-cycling-dashboard && .venv/bin/python -m battery_dash.reports --all >> logs/cron.log 2>&1
